@@ -19,7 +19,7 @@ public class MakeCubeWithHand : MonoBehaviour {
 		Frame frame = controller.Frame(); //The latest frame
 		HandList handList = frame.Hands;
 
-		if (!handList.IsEmpty) {
+		if (GameObject.Find ("CleanRobotLeftHand(Clone)") != null) {
 			leftHand = GameObject.Find ("CleanRobotLeftHand(Clone)");
 			lIndexTip = leftHand.transform.Find ("index/bone3");
 		}
@@ -32,17 +32,23 @@ public class MakeCubeWithHand : MonoBehaviour {
 				Finger indexFinger = frame.Hands [0].Fingers [(int)Finger.FingerType.TYPE_INDEX];
 				// take raw value and conver using ToUnityScaled()
 				Vector3 fingerTipPos = indexFinger.TipPosition.ToUnityScaled ();
-				GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
-				cube.transform.position = lIndexTip.transform.position;
-				print ("FINGER: "+lIndexTip.transform.position);
-				print ("CUBE: "+cube.transform.position);
+				makeCube(fingerTipPos);
 				break;
 			}
 		}
 
 
+	}
 
-
-	
+	void makeCube(Vector3 pos)
+	{
+		GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
+		cube.transform.position = pos;
+		cube.AddComponent<BoxCollider> ();
+		AudioSource cubeSound = new AudioSource ();
+		cube.AddComponent<AudioSource>();
+		cube.GetComponent<AudioSource>().clip = Resources.Load("Assets/sounds/drum_loops/drum_loop") as AudioClip;
+		cube.GetComponent<AudioSource> ().loop = true;
+		cube.AddComponent<CubeSound> ();
 	}
 }

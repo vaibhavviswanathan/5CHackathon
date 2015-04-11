@@ -3,20 +3,19 @@ using System.Collections;
 
 public class EditMode : MonoBehaviour {
 
-	bool inEditMode;
+	public bool inEditMode;
 	const int EDIT_MODE = 1;
+	ModeSelector modeSelector;
 	// Use this for initialization
 	void Start () {
-		GameObject targetObj = GameObject.Find("Main Camera"); // drag the object with the Clips variable here
-		ModeSelector targetScript = targetObj.GetComponent<ModeSelector>();
-		inEditMode = targetScript.currentMode == EDIT_MODE;	
+		modeSelector = this.GetComponentInParent<ModeSelector>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		GameObject targetObj = GameObject.Find("Main Camera"); // drag the object with the Clips variable here
 		ModeSelector targetScript = targetObj.GetComponent<ModeSelector>();
-		inEditMode = targetScript.currentMode == EDIT_MODE;	
+		inEditMode = modeSelector.getCurrentMode() == EDIT_MODE;	
 
 
 
